@@ -12,6 +12,7 @@ namespace Mvc5_Contatos.Controllers
 {
     public class ContatosController : Controller
     {
+        //Lista os contatos sem o endereço
         // GET: Contatos
         public ActionResult Index()
         {
@@ -43,6 +44,7 @@ namespace Mvc5_Contatos.Controllers
            
         }
 
+        //Criar um novo contato
         [HttpGet]
         public ActionResult create()
         {
@@ -71,6 +73,59 @@ namespace Mvc5_Contatos.Controllers
                 ModelState.AddModelError(string.Empty, "Erro no Servidor. Contate o Administrador.");
                 return View(contato);
             }
+        }
+
+        //Editar um contato
+        public ActionResult Edit(int? id)
+        {
+            if(id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            ContatoViewModel contato = null;
+            using(var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri("http://localhost:59216/api/contatos");
+
+                //HTTP GET
+                var responseTask = client.GetAsync("?id=" + id.ToString());
+                responseTask.Wait();
+                var result = responseTask.Result;
+
+                if (result.IsSuccessStatusCode)
+                {
+                    var readTask = result.Content.ReadAsAsync<ContatoViewModel>();
+                    readTask.Wait();
+
+                    contato = readTask.Result;
+                }
+            }
+            return View(contato);
+        }
+
+        [HttpPost]
+        public ActionResult Edit(ContatoViewModel contato)
+        {
+            if(contato == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            using(var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri("http://localhost:59216/api/");
+
+                //HTTP PUT
+                var putTask = client.PutAsJsonAsync<ContatoViewModel>("contatos", contato);
+                putTask.Wait();
+                var result = putTask.Result;
+
+                if (result.IsSuccessStatusCode)
+                {
+                    return RedirectToAction("Index");
+                }
+            }
+            return View(contato);
         }
     }
 }
