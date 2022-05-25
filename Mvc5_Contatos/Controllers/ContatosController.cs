@@ -154,5 +154,35 @@ namespace Mvc5_Contatos.Controllers
             }
             return View(contato);
         }
+
+        //Detales de um contato
+        public ActionResult Details(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            ContatoViewModel contato = null;
+
+            using(var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri("http://localhost:59216/api/contatos");
+
+                //HTTP GET
+                var responseTask = client.GetAsync("?id=" + id.ToString());
+                responseTask.Wait();
+                var result = responseTask.Result;
+
+                if (result.IsSuccessStatusCode)
+                {
+                    var readTask = result.Content.ReadAsAsync<ContatoViewModel>();
+                    readTask.Wait();
+
+                    contato = readTask.Result;
+                }
+            }
+            return View(contato);
+        }
     }
 }

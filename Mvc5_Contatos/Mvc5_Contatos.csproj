@@ -172,6 +172,7 @@
     <Content Include="Views\Contatos\Index.cshtml" />
     <Content Include="Views\Contatos\create.cshtml" />
     <Content Include="Views\Contatos\Edit.cshtml" />
+    <Content Include="Views\Contatos\Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
