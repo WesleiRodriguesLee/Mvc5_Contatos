@@ -127,5 +127,32 @@ namespace Mvc5_Contatos.Controllers
             }
             return View(contato);
         }
+
+        //Deletar um contato
+        public ActionResult Delete(int? id)
+        {
+            if(id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            ContatoViewModel contato = null;
+
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri("http://localhost:59216/api/");
+
+                //HTTP DELETE
+                var deleteTask = client.DeleteAsync("contatos/" + id.ToString());
+                deleteTask.Wait();
+                var result = deleteTask.Result;
+
+                if (result.IsSuccessStatusCode)
+                {
+                    return RedirectToAction("Index");
+                }
+            }
+            return View(contato);
+        }
     }
 }

@@ -50,7 +50,8 @@
             <td>
                 @Html.ActionLink("Edit", "Edit", new { id = item.ContatoId }) |
                 @Html.ActionLink("Details", "Details", new { id = item.ContatoId }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.ContatoId })
+                @Html.ActionLink("Delete", "Delete", new { id = item.ContatoId },
+                new { onclick = "return confirm('Desseja realmente deletar este contato ?');" })
             </td>
         </tr>
     }
