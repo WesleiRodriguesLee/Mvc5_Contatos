@@ -184,5 +184,35 @@ namespace Mvc5_Contatos.Controllers
             }
             return View(contato);
         }
+
+        //SEARCH - BUSCAR UM CONTATO PELO NOME
+
+        public ActionResult Search(string nome)
+        {
+            IEnumerable<ContatoViewModel> contatos = null;
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri("http://localhost:59216/api/");
+
+                //HTTP GET
+                var responseTask = client.GetAsync("contatos?nome=" + nome);
+                responseTask.Wait();
+                var result = responseTask.Result;
+
+                if (result.IsSuccessStatusCode)
+                {
+                    var readTask = result.Content.ReadAsAsync<IList<ContatoViewModel>>();
+                    readTask.Wait();
+
+                    contatos = readTask.Result;
+                }
+                else
+                {
+                    contatos = Enumerable.Empty<ContatoViewModel>();
+                    ModelState.AddModelError(string.Empty, "Erro no servidor.Contate o Administrador.");
+                }
+                return View(contatos);
+            }
+        }
     }
 }

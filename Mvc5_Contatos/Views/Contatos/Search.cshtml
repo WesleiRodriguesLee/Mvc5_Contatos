@@ -1,26 +1,19 @@
 ﻿@model IEnumerable<Mvc5_Contatos.Models.ContatoViewModel>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Search";
 }
 
 <h2>Relação de Contatos</h2>
 
-@using(Html.BeginForm("Search", "Contatos", FormMethod.Get))
-     {
-        @Html.Label("Nome", "Nome")
-       <input type="text" name="nome"/>
-       <input type="submit" name="submit" value="Procurar"/>
-      }
-
-<p>
-    @Html.ActionLink("Criar Novo Contato", "Create")
-</p>
+@*<p>
+    @Html.ActionLink("Create New", "Create")
+</p>*@
 <table class="table">
     <tr>
         @*<th>
-            @Html.DisplayNameFor(model => model.ContatoId)
-        </th>*@
+                @Html.DisplayNameFor(model => model.ContatoId)
+            </th>*@
         <th>
             @Html.DisplayNameFor(model => model.Nome)
         </th>
@@ -31,8 +24,8 @@
             @Html.DisplayNameFor(model => model.Telefone)
         </th>
         @*<th>
-            @Html.DisplayNameFor(model => model.EnderecoId)
-        </th>*@
+                @Html.DisplayNameFor(model => model.EnderecoId)
+            </th>*@
         <th></th>
     </tr>
 
@@ -40,8 +33,8 @@
     {
         <tr>
             @*<td>
-                @Html.DisplayFor(modelItem => item.ContatoId)
-            </td>*@
+                    @Html.DisplayFor(modelItem => item.ContatoId)
+                </td>*@
             <td>
                 @Html.DisplayFor(modelItem => item.Nome)
             </td>
@@ -52,13 +45,13 @@
                 @Html.DisplayFor(modelItem => item.Telefone)
             </td>
             @*<td>
-                @Html.DisplayFor(modelItem => item.EnderecoId)
-            </td>*@
+                    @Html.DisplayFor(modelItem => item.EnderecoId)
+                </td>*@
             <td>
                 @Html.ActionLink("Edit", "Edit", new { id = item.ContatoId }) |
                 @Html.ActionLink("Details", "Details", new { id = item.ContatoId }) |
                 @Html.ActionLink("Delete", "Delete", new { id = item.ContatoId },
-                new { onclick = "return confirm('Desseja realmente deletar este contato ?');" })
+               new { onclick = "return confirm('Deseja realmente deletar este contato ?');" })
             </td>
         </tr>
     }
