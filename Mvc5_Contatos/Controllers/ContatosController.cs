@@ -6,6 +6,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web;
 using System.Web.Mvc;
+using PagedList;
 
 
 namespace Mvc5_Contatos.Controllers
@@ -14,12 +15,15 @@ namespace Mvc5_Contatos.Controllers
     {
         //Lista os contatos sem o endereço
         // GET: Contatos
-        public ActionResult Index()
+        public ActionResult Index(int? pagina)
         {
+            int paginaTamanho = 4;
+            int paginaNumero = (pagina ?? 1);
             IEnumerable<ContatoViewModel> contatos = null;
 
             using(var client = new HttpClient())
             {
+                
                 client.BaseAddress = new Uri("http://localhost:59216/api/");
 
                 //HTTP GET
@@ -39,7 +43,7 @@ namespace Mvc5_Contatos.Controllers
                     contatos = Enumerable.Empty<ContatoViewModel>();
                     ModelState.AddModelError(string.Empty, "Erro no servidor.Contate o Administrador.");
                 }
-            return View(contatos);
+            return View(contatos.ToPagedList(paginaNumero, paginaTamanho));
             }
            
         }

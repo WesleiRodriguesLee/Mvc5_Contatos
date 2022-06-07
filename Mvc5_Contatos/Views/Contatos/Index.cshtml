@@ -1,4 +1,6 @@
-﻿@model IEnumerable<Mvc5_Contatos.Models.ContatoViewModel>
+﻿@using PagedList;
+@using PagedList.Mvc;
+@model PagedList.IPagedList<Mvc5_Contatos.Models.ContatoViewModel>
 
 @{
     ViewBag.Title = "Index";
@@ -22,13 +24,13 @@
             @Html.DisplayNameFor(model => model.ContatoId)
         </th>*@
         <th>
-            @Html.DisplayNameFor(model => model.Nome)
+            @Html.DisplayNameFor(model => model[0].Nome)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Email)
+            @Html.DisplayNameFor(model => model[0].Email)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Telefone)
+            @Html.DisplayNameFor(model => model[0].Telefone)
         </th>
         @*<th>
             @Html.DisplayNameFor(model => model.EnderecoId)
@@ -69,3 +71,32 @@
     </tr>
 
 </table>
+
+<div>
+    Página @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) de @Model.PageCount
+
+    @if (Model.HasPreviousPage)
+            {
+        @Html.ActionLink("<", "Index", new { pagina = 1 })
+        @Html.Raw(" ");
+        @Html.ActionLink("[ Anterior", "Index", new {pagina = Model.PageNumber - 1})
+            }
+            else
+            {
+                @:<
+                @Html.Raw(" ");
+                @:< Anterior
+            }
+    @if (Model.HasNextPage)
+            {
+                @Html.ActionLink("Próxima ]", "Index", new { pagina = Model.PageNumber + 1})
+                @Html.Raw(" ");
+                @Html.ActionLink(">", "Index", new { pagina = Model.PageCount})
+            }
+            else
+            {
+                @:Próxima >
+                @Html.Raw(" ")
+                @:>
+            }       
+</div>
